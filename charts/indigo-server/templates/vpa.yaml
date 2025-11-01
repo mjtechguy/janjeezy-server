@@ -1,0 +1,26 @@
+{{- if .Values.gateway.vpa.enabled }}
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: {{ include "indigo-server.fullname" . }}
+  labels:
+    {{- include "indigo-server.labels" . | nindent 4 }}
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "indigo-server.fullname" . }}
+  updatePolicy:
+    updateMode: {{ .Values.gateway.vpa.updateMode }}
+  resourcePolicy:
+    containerPolicies:
+    - containerName: indigo-server
+      {{- with .Values.gateway.vpa.minAllowed }}
+      minAllowed:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.gateway.vpa.maxAllowed }}
+      maxAllowed:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

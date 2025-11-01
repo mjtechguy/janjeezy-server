@@ -1,5 +1,5 @@
 @echo off
-REM Jan Server Test Runner - Single Flow Tests
+REM Indigo Server Test Runner - Single Flow Tests
 REM Usage: test-run-single-flow.bat [BASE_URL] [MODEL] [DEBUG] [TEST_TYPE]
 
 set BASE_URL=%1

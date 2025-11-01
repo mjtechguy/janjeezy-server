@@ -1,14 +1,14 @@
 # Release Procedure
 
 ## 0. Announce Release
-- Create a thread in **#jan-server-internal** channel  
-  - `Jan Server Release vX.X.X (Release Manager:)`  
+- Create a thread in **#indigo-server-internal** channel  
+  - `Indigo Server Release vX.X.X (Release Manager:)`  
 
 ## 2. Pre-flight Checks
 - **System Environment** 
   - Confirm environment variables are correctly configured  
-  - jan-api-gateway:
-    - git diff release..main -- apps/jan-api-gateway/application/config/environment_variables/env.go
+  - indigo-api-gateway:
+    - git diff release..main -- apps/indigo-api-gateway/application/config/environment_variables/env.go
   - Ask DevOps to verify **Prod Vault** is updated 
 
 - **Database**  

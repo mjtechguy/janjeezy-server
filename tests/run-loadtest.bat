@@ -1,14 +1,14 @@
 @echo off
 setlocal enabledelayedexpansion
 
-REM Load Test Runner Script for Jan Server (Windows Batch Version)
+REM Load Test Runner Script for Indigo Server (Windows Batch Version)
 REM Usage: run-loadtest.bat [test_case_name]
 REM Examples:
 REM   run-loadtest.bat                    # Run all test cases
 REM   run-loadtest.bat health-check      # Run only health-check test
 REM   run-loadtest.bat --list            # Show available test cases
 
-echo Jan Server Load Test Runner
+echo Indigo Server Load Test Runner
 echo ============================
 
 REM Load environment variables from .env file if it exists

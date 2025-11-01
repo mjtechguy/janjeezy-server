@@ -1,4 +1,4 @@
-# Simple Docker image to run k6-based load tests for Jan Server
+# Simple Docker image to run k6-based load tests for Indigo Server
 # Supports two modes:
 # 1) Mount your local tests directory to /tests to use local files and persist results
 # 2) Use the baked-in copy of the tests (copied at build time)

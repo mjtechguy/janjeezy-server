@@ -1,0 +1,99 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: indigo-postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  valkey:
+    image: valkey/valkey:7-alpine
+    container_name: indigo-valkey
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    command:
+      [
+        "valkey-server",
+        "--save",
+        "",
+        "--appendonly",
+        "no",
+        "--requirepass",
+        "${REDIS_PASSWORD}"
+      ]
+
+  api:
+    build:
+      context: ../apps/indigo-api-gateway
+      dockerfile: Dockerfile
+      args:
+        VERSION_TAG: local
+    image: indigo-api:latest
+    container_name: indigo-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      DB_POSTGRESQL_WRITE_DSN: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
+      DB_POSTGRESQL_READ1_DSN: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
+      REDIS_URL: ${REDIS_URL}
+      REDIS_DB: "0"
+      ORGANIZATION_ADMIN_EMAILS: ${ORGANIZATION_ADMIN_EMAILS}
+      LOCAL_ADMIN_PASSWORD: ${LOCAL_ADMIN_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      APIKEY_SECRET: ${APIKEY_SECRET}
+      MODEL_PROVIDER_SECRET: ${MODEL_PROVIDER_SECRET}
+      SERPER_API_KEY: ${SERPER_API_KEY}
+      ALLOWED_CORS_HOSTS: ${ALLOWED_CORS_HOSTS}
+      ENABLE_ADMIN_API: "true"
+      JAN_INFERENCE_SETUP: "false"
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ../indigo-frontend
+      dockerfile: Dockerfile
+    image: indigo-frontend:latest
+    container_name: indigo-frontend
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_started
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: "1"
+      JAN_API_BASE_URL: ${JAN_API_BASE_URL}
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL}
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres-data:

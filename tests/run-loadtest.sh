@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Load Test Runner Script for Jan Server
+# Load Test Runner Script for Indigo Server
 # Usage: ./run-loadtest.sh [test_case_name]
 
 set -e
@@ -320,7 +320,7 @@ list_test_cases() {
 main() {
     local test_case="$1"
     
-    log_info "Jan Server Load Test Runner"
+    log_info "Indigo Server Load Test Runner"
     log_info "============================"
     
     # Check prerequisites

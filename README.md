@@ -1,10 +1,10 @@
-# Jan Server
+# Indigo Server
 
-A comprehensive self-hosted AI server platform that provides OpenAI-compatible APIs, multi-tenant organization management, and AI model inference capabilities. Jan Server enables organizations to deploy their own private AI infrastructure with full control over data, models, and access.
+A comprehensive self-hosted AI server platform that provides OpenAI-compatible APIs, multi-tenant organization management, and AI model inference capabilities. Indigo Server enables organizations to deploy their own private AI infrastructure with full control over data, models, and access.
 
 ## 🚀 Overview
 
-Jan Server is a Kubernetes-native platform consisting of multiple microservices that work together to provide a complete AI infrastructure solution. It offers:
+Indigo Server is a Kubernetes-native platform consisting of multiple microservices that work together to provide a complete AI infrastructure solution. It offers:
 
 - **OpenAI-Compatible API**: Full compatibility with OpenAI's chat completion API
 - **Multi-Tenant Architecture**: Organization and project-based access control
@@ -23,7 +23,7 @@ Jan Server is a Kubernetes-native platform consisting of multiple microservices 
 
 ## 📦 Services
 
-### Jan API Gateway
+### Indigo API Gateway
 The core API service that provides OpenAI-compatible endpoints and manages all client interactions.
 
 **Key Features:**
@@ -56,7 +56,7 @@ The persistent data storage layer with enterprise-grade features.
 
 ### Prerequisites
 
-Before setting up Jan Server, ensure you have the following components installed:
+Before setting up Indigo Server, ensure you have the following components installed:
 
 #### Required Components
 
@@ -135,10 +135,10 @@ If you plan to run real LLM models (not mock servers) and have an NVIDIA GPU:
 
 ### Production Deployment
 
-For production deployments, modify the Helm values in `charts/jan-server/values.yaml` and deploy using:
+For production deployments, modify the Helm values in `charts/indigo-server/values.yaml` and deploy using:
 
 ```bash
-helm install jan-server ./charts/jan-server
+helm install indigo-server ./charts/indigo-server
 ```
 
 ## ⚙️ Configuration
@@ -147,7 +147,7 @@ helm install jan-server ./charts/jan-server
 
 The system is configured through environment variables defined in the Helm values file. Key configuration areas include:
 
-#### Jan API Gateway Configuration
+#### Indigo API Gateway Configuration
 - **Database Connection**: PostgreSQL connection strings for read/write replicas
 - **Authentication**: JWT secrets and Google OAuth2 credentials
 - **API Keys**: Encryption secrets for API key management
@@ -174,9 +174,9 @@ The system uses Helm charts for deployment configuration:
 
 ### Project Structure
 ```
-jan-server/
+indigo-server/
 ├── apps/                          # Application services
-│   ├── jan-api-gateway/           # Main API gateway service
+│   ├── indigo-api-gateway/           # Main API gateway service
 │   │   ├── application/           # Go application code
 │   │   ├── docker/               # Docker configuration
 │   │   └── README.md            # Service-specific documentation
@@ -184,7 +184,7 @@ jan-server/
 │       ├── application/           # Python application code
 │       └── Dockerfile           # Container configuration
 ├── charts/                        # Helm charts
-│   └── jan-server/           # Main deployment chart
+│   └── indigo-server/           # Main deployment chart
 ├── scripts/                      # Deployment and utility scripts
 └── README.md                     # This file
 ```
@@ -193,7 +193,7 @@ jan-server/
 
 ```bash
 # Build API Gateway
-docker build -t jan-api-gateway:latest ./apps/jan-api-gateway
+docker build -t indigo-api-gateway:latest ./apps/indigo-api-gateway
 
 # Build Inference Model
 docker build -t jan-inference-model:latest ./apps/jan-inference-model
@@ -205,7 +205,7 @@ The system uses Atlas for database migrations:
 
 ```bash
 # Generate migration files
-go run ./apps/jan-api-gateway/application/cmd/codegen/dbmigration
+go run ./apps/indigo-api-gateway/application/cmd/codegen/dbmigration
 
 # Apply migrations
 atlas migrate apply --url "your-database-url"
@@ -253,22 +253,22 @@ eval $(minikube docker-env)
 ./scripts/run.sh
 
 # Access services
-kubectl port-forward svc/jan-server-jan-api-gateway 8080:8080
+kubectl port-forward svc/indigo-server-indigo-api-gateway 8080:8080
 ```
 
 ### Production Deployment
 ```bash
 # Update Helm dependencies
-helm dependency update ./charts/jan-server
+helm dependency update ./charts/indigo-server
 
 # Deploy to production
-helm install jan-server ./charts/jan-server
+helm install indigo-server ./charts/indigo-server
 
 # Upgrade deployment
-helm upgrade jan-server ./charts/jan-server
+helm upgrade indigo-server ./charts/indigo-server
 
 # Uninstall
-helm uninstall jan-server
+helm uninstall indigo-server
 ```
 
 ## 🐛 Troubleshooting
@@ -277,7 +277,7 @@ helm uninstall jan-server
 
 ### 1. LLM Pod Not Starting (Pending Status)
 
-**Symptoms**: The `jan-server-jan-inference-model` pod stays in `Pending` status.
+**Symptoms**: The `indigo-server-jan-inference-model` pod stays in `Pending` status.
 
 **Diagnosis Steps**:
 ```bash
@@ -285,7 +285,7 @@ helm uninstall jan-server
 kubectl get pods
 
 # Get detailed pod information (replace with your actual pod name)
-kubectl describe pod jan-server-jan-inference-model-<POD_ID>
+kubectl describe pod indigo-server-jan-inference-model-<POD_ID>
 ```
 
 **Common Error Messages and Solutions**:
@@ -305,7 +305,7 @@ kubectl describe pod jan-server-jan-inference-model-<POD_ID>
 ##### Error: vLLM Pod Keeps Restarting
 ```
 # Check pod logs to see the actual error
-kubectl logs jan-server-jan-inference-model-<POD_ID>
+kubectl logs indigo-server-jan-inference-model-<POD_ID>
 ```
 
 **Common vLLM startup issues**:
@@ -320,14 +320,14 @@ kubectl logs jan-server-jan-inference-model-<POD_ID>
 **Solutions**:
 ```bash
 # Update Helm dependencies
-helm dependency update ./charts/jan-server
+helm dependency update ./charts/indigo-server
 
 # Check Helm status
 helm list
 
 # Uninstall and reinstall
-helm uninstall jan-server
-helm install jan-server ./charts/jan-server
+helm uninstall indigo-server
+helm install indigo-server ./charts/indigo-server
 ```
 
 ## 📚 API Documentation

@@ -1,6 +1,6 @@
 # How to Create New Test Scenarios
 
-This guide explains how to create new K6 test scenarios for the Jan Server API.
+This guide explains how to create new K6 test scenarios for the Indigo Server API.
 
 ## 🎯 Overview
 

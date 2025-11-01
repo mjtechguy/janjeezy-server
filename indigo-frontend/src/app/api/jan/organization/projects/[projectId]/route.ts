@@ -1,0 +1,25 @@
+import { NextRequest, NextResponse } from "next/server";
+import { janFetch } from "@/lib/jan-fetch";
+
+export const dynamic = "force-dynamic";
+
+export async function POST(req: NextRequest, context: any) {
+  const payload = await req.json().catch(() => null);
+  try {
+    const upstream = await janFetch(
+      `/v1/organization/projects/${context.params.projectId}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      }
+    );
+    const json = await upstream.json().catch(() => null);
+    return NextResponse.json(json, { status: upstream.status });
+  } catch {
+    return NextResponse.json(
+      { error: "Unable to update project" },
+      { status: 500 }
+    );
+  }
+}

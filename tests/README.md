@@ -1,6 +1,6 @@
-# Jan Server Load Tests
+# Indigo Server Load Tests
 
-Comprehensive K6 load testing framework for the Jan Server API, including authentication, completions, conversations, and response endpoints.
+Comprehensive K6 load testing framework for the Indigo Server API, including authentication, completions, conversations, and response endpoints.
 
 ## 🚀 Quick Start
 
